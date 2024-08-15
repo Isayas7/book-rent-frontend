@@ -84,7 +84,7 @@ export const useUpdateBookQuery = () => {
             return res.data;
         },
         onSuccess: () => {
-            queryClient.invalidateQueries("OwnBooks");
+            queryClient.invalidateQueries({ queryKey: ["OwnBooks"] });
         },
     });
 };
@@ -96,7 +96,7 @@ export const useDeleteBookQuery = () => {
             return axios.delete(`${process.env.NEXT_PUBLIC_BASE_URL}/api/book/${id}`, { withCredentials: true });
         },
         onSuccess: () => {
-            queryClient.invalidateQueries("ownerBooks");
+            queryClient.invalidateQueries({ queryKey: ["ownerBooks"] });
         },
     });
 };
@@ -118,7 +118,7 @@ export const useChangeBookStatusQuery = () => {
             return res.data;
         },
         onSuccess: () => {
-            queryClient.invalidateQueries("Books");
+            queryClient.invalidateQueries({ queryKey: ["Books"] });
         },
     });
 };

@@ -58,7 +58,7 @@ export const useChangeOwnerStatusQuery = () => {
             return res.data;
         },
         onSuccess: () => {
-            queryClient.invalidateQueries("OwnerList");
+            queryClient.invalidateQueries({ queryKey: ["OwnerList"] });
         },
     });
 };
@@ -70,7 +70,7 @@ export const useDeleteOwnerQuery = () => {
             return axios.delete(`${process.env.NEXT_PUBLIC_BASE_URL}/api/user/${id}`, { withCredentials: true });
         },
         onSuccess: () => {
-            queryClient.invalidateQueries("OwnerList");
+            queryClient.invalidateQueries({ queryKey: ["OwnerList"] });
         },
     });
 };
