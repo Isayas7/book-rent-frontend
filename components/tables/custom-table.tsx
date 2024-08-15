@@ -52,7 +52,7 @@ const GenericTable = <T extends MRT_RowData>({
       // Add columnFilters
       columnFilters.forEach(filter => {
         if (filter.id && filter.value) {
-          filterParams.set(filter.id, filter.value);
+          filterParams.set(filter.id, String(filter.value));
         }
       });
 
