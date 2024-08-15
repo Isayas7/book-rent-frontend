@@ -7,10 +7,13 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useUserRegisterQuery } from "@/hooks/use-users-query";
 import { RegisterFormTypes } from "@/utils/types";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
 const RegisterForm = () => {
+  const router = useRouter()
   const { mutate: registerUser, isSuccess, isPending, isError, error } = useUserRegisterQuery();
   const { register, handleSubmit, reset, formState: { errors } } = useForm<RegisterFormTypes>({
     resolver: zodResolver(registerSchema),
@@ -29,6 +32,8 @@ const RegisterForm = () => {
     registerUser(data, {
       onSuccess: () => {
         reset();
+        toast.success("Account created Successfully")
+        router.push("/login")
       },
     });
   };
