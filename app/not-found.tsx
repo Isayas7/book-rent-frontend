@@ -31,7 +31,7 @@ const NotFound = () => {
                 color="textSecondary"
                 mb={4}
             >
-                Sorry, the page you’re looking for doesn’t exist.
+                Sorry, the page you are looking for does not exist.
             </Typography>
 
             <Button
