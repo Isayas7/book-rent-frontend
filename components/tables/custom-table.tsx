@@ -39,7 +39,7 @@ const GenericTable = <T extends MRT_RowData>({
       globalFilter
     ],
     queryFn: async () => {
-      const fetchURL = new URL(fetchUrl, 'https://book-rent-backend-production.up.railway.app');
+      const fetchURL = new URL(fetchUrl, 'http://localhost:8000');
 
       // Convert filters object to query string
       const filterParams = new URLSearchParams();

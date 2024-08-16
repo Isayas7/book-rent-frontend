@@ -58,7 +58,7 @@ const OwnerDashboard = () => {
           maxHeight="300px"
           title="Live Book status"
           fetchUrl="/api/book/ownBooks"
-          queryKey="ownerBooks"
+          queryKey="ownBooks"
         />
         <Box
           sx={{

@@ -59,7 +59,7 @@ const AdminDashboard = () => {
           maxHeight="300px"
           title="Live Book status"
           fetchUrl="api/book/allBooks"
-          queryKey="Books"
+          queryKey="allBooks"
         />
 
         <Box

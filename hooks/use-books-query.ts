@@ -1,11 +1,10 @@
-import { CreateBookFormTypes, UpdateBookFormTypes } from '@/utils/types';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import axios from 'axios';
 
 
 export const getOwnBookQuery = () => {
     return useQuery({
-        queryKey: ["OwnBooks"],
+        queryKey: ["ownBooks"],
         queryFn: async () => {
             const res = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/api/book/ownBooks`, {
                 withCredentials: true,
@@ -16,7 +15,7 @@ export const getOwnBookQuery = () => {
 };
 export const getOwnRentalQuery = () => {
     return useQuery({
-        queryKey: ["OwnRental"],
+        queryKey: ["ownRental"],
         queryFn: async () => {
             const res = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/api/rental/own-rental`, {
                 withCredentials: true,
@@ -84,7 +83,7 @@ export const useUpdateBookQuery = () => {
             return res.data;
         },
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["OwnBooks"] });
+            queryClient.invalidateQueries({ queryKey: ["ownBooks"] });
         },
     });
 };
@@ -96,7 +95,7 @@ export const useDeleteBookQuery = () => {
             return axios.delete(`${process.env.NEXT_PUBLIC_BASE_URL}/api/book/${id}`, { withCredentials: true });
         },
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["ownerBooks"] });
+            queryClient.invalidateQueries({ queryKey: ["ownBooks"] });
         },
     });
 };
@@ -118,7 +117,7 @@ export const useChangeBookStatusQuery = () => {
             return res.data;
         },
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["Books"] });
+            queryClient.invalidateQueries({ queryKey: ["allBooks"] });
         },
     });
 };

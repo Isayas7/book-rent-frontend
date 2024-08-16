@@ -153,8 +153,6 @@ export const adminOwnerColumns: MRT_ColumnDef<adminOwnerColumnsTypes>[] = [
       };
 
       const handleDelete = () => {
-        console.log("vvv", row.original.id,);
-
         deleteOwner(row.original.id, {
           onSuccess: () => {
             toast.success("Successfully deleted")
