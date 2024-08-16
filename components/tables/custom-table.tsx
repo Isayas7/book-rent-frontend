@@ -39,7 +39,7 @@ const GenericTable = <T extends MRT_RowData>({
       globalFilter
     ],
     queryFn: async () => {
-      const fetchURL = new URL(fetchUrl, 'http://localhost:8000');
+      const fetchURL = new URL(fetchUrl, process.env.NEXT_PUBLIC_BASE_URL);
 
       // Convert filters object to query string
       const filterParams = new URLSearchParams();
