@@ -6,7 +6,7 @@ import {
   type MRT_ColumnDef,
   type MRT_ColumnFiltersState
 } from 'material-react-table';
-import { Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import axios from 'axios';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 
@@ -69,6 +69,7 @@ const GenericTable = <T extends MRT_RowData>({
     enableColumnActions: false,
     enableSorting: false,
 
+
     enablePagination: false,
     enableTableFooter: false,
     enableStickyFooter: false,
@@ -80,6 +81,7 @@ const GenericTable = <T extends MRT_RowData>({
       globalFilter,
       showAlertBanner: isError,
       showProgressBars: isRefetching,
+      showSkeletons: isLoading
     },
     manualFiltering: true,
     initialState: { showColumnFilters: false },
