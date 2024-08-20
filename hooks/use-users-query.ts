@@ -37,7 +37,7 @@ export const useOwnerQuery = () => {
     return useQuery({
         queryKey: ['ownerList'],
         queryFn: async () => {
-            const res = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/api/user/ownerList`, {
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/api/user/owner-list`, {
                 withCredentials: true,
             });
             return res.data

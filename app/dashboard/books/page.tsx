@@ -9,7 +9,6 @@ import React from "react";
 
 export default function Books() {
 
-
   return (
     <Box sx={{
       width: "100%",
@@ -20,7 +19,7 @@ export default function Books() {
         columns={adminBookColumns}
         maxHeight="470px"
         title="List of Books"
-        fetchUrl="api/book/allBooks"
+        fetchUrl="api/book/all-books"
         queryKey="allBooks"
       />
 

@@ -11,6 +11,7 @@ import {
   Typography,
   Button,
   Box,
+  Divider,
 } from "@mui/material";
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
@@ -46,23 +47,8 @@ const UploadBook = () => {
   const [inputValue, setInputValue] = useState('');
   const [fileName, setFileName] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [isEdit, setIsEdit] = useState<boolean>(false);
-  const [editId, setEditId] = useState(null)
-
 
   const fileInputRef = useRef<HTMLInputElement>(null);
-
-  const { control, handleSubmit, reset, setValue: setFormValue, clearErrors, formState: { errors, } } = useForm({
-    resolver: zodResolver(createBookSchema),
-    defaultValues: {
-      bookName: '',
-      author: '',
-      category: '',
-      quantity: null,
-      rentPrice: null,
-      cover: null,
-    },
-  });
 
   useEffect(() => {
     if (data && Array.isArray(data.data)) {
@@ -77,6 +63,20 @@ const UploadBook = () => {
       setOptions(bookNames);
     }
   }, [data]);
+
+
+  const { control, handleSubmit, reset, setValue: setFormValue, clearErrors, formState: { errors, } } = useForm({
+    resolver: zodResolver(createBookSchema),
+    defaultValues: {
+      bookName: '',
+      author: '',
+      category: '',
+      quantity: null,
+      rentPrice: null,
+      cover: null,
+    },
+  });
+
 
   const handleOpen = () => {
     setOpen(true);
@@ -105,7 +105,7 @@ const UploadBook = () => {
   };
 
   const { mutate: addBook, isSuccess, isPending, isError, error } = useBookCreateQuery();
-  const { mutate: updateBook, isSuccess: isUpdateSuccess, isPending: isUpdatePending, isError: isUpdateError, error: UpdateError } = useUpdateBookQuery();
+
 
 
   const onSubmit = (data: any) => {
@@ -118,243 +118,216 @@ const UploadBook = () => {
     if (selectedFile) {
       formData.append('cover', selectedFile);
     }
+    addBook(formData, {
+      onSuccess: () => {
+        reset();
+        setFileName(null);
+        toast.success("Successfully Created")
+      },
+    });
 
-    if (isEdit) {
-      updateBook({ bookId: editId, newBookInfo: formData }, {
-        onSuccess: () => {
-          setIsEdit(false)
-          setFileName(null);
-          reset();
-          toast.success("Successfully Updated")
-        },
-      });
-    } else {
-      addBook(formData, {
-        onSuccess: () => {
-          reset();
-          setFileName(null);
-          toast.success("Successfully Created")
-
-        },
-      });
-    }
   };
 
-  const handleBookSelect = (selectedBook: any) => {
-    setFormValue('bookName', selectedBook.bookName);
-    setFormValue('author', selectedBook.author);
-    setFormValue('category', selectedBook.category);
-    setFormValue('quantity', selectedBook.quantity);
-    setFormValue('rentPrice', selectedBook.rentPrice);
-    // Clear errors
-    clearErrors();
-    setIsEdit(true)
-    setEditId(selectedBook.id)
-  };
 
   return (
-    <Box>
-      <Box sx={{ width: 400 }}>
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          style={{ display: "flex", flexDirection: "column", gap: 10, marginTop: 10 }}
-        >
-          <Box sx={{ width: 400, mx: 'auto' }}>
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      style={{ display: "flex", alignItems: "center", width: 600, flexDirection: "column", gap: 10, marginTop: 10 }}
+    >
+      <Controller
+        name="bookName"
+        control={control}
+        render={({ field }) => (
+          <Autocomplete
+            {...field}
+            value={value}
+            onChange={(event, newValue) => setValue(newValue)}
+            inputValue={inputValue}
+            onInputChange={(event, newInputValue) => setInputValue(newInputValue)}
+            id="controllable-states-demo"
+            options={[...options, { bookName: '' }]}
+            getOptionLabel={(option) => option.bookName}
+            sx={{ width: 350 }}
+            renderInput={(params) => (
+              <TextField {...params} variant="filled" label="Search Book" />
+            )}
+            renderOption={(props, option) => (
+              <Box component="li" {...props} sx={{ borderTop: option.bookName === '' ? '1px solid lightgray' : 'none' }}>
+                {option.bookName === '' ? (
+                  <Button onClick={handleOpen} >
+                    Add
+                  </Button>
+
+                ) : (
+                  option.bookName
+                )}
+              </Box>
+            )}
+          />
+        )}
+      />
+
+      {/* MODAL */}
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="parent-modal-title"
+        aria-describedby="parent-modal-description"
+      >
+        <Box sx={{ ...style, width: 500 }}>
+          <Box sx={{ display: "flex", gap: 1, flexDirection: "column", }}>
             <Controller
               name="bookName"
               control={control}
               render={({ field }) => (
-                <Autocomplete
+                <TextField
                   {...field}
-                  value={value}
-                  onChange={(event: any, newValue: any) => {
-                    setValue(newValue);
-                    handleBookSelect(newValue);
-                  }}
-                  inputValue={inputValue}
-                  onInputChange={(event, newInputValue) => {
-                    setInputValue(newInputValue);
-                  }}
-                  id="controllable-states-demo"
-                  options={options}
-                  getOptionLabel={(option) => option.bookName}
-                  sx={{ width: '100%' }}
-                  renderInput={(params) => <TextField {...params} label="Search Book" />}
+                  label="Book Name"
+                  variant="outlined"
+                  fullWidth
+                  sx={{ mb: 2 }}
                 />
               )}
             />
-            {isEdit ?
-              <Button
-                variant="contained"
-                onClick={handleOpen}
-                sx={{ mt: 2, width: "100%" }}
-              >
-                Edit
-              </Button> : <Button
-                variant="contained"
-                onClick={handleOpen}
-                sx={{ mt: 2, width: "100%" }}
-              >
-                Add
-              </Button>
-            }
-
+            {errors.bookName && <Box sx={{ color: "red" }}>
+              {errors.bookName.message}
+            </Box>}
           </Box>
-          <Modal
-            open={open}
-            onClose={handleClose}
-            aria-labelledby="parent-modal-title"
-            aria-describedby="parent-modal-description"
-          >
-            <Box sx={{ ...style, width: 500 }}>
-              <Box sx={{ display: "flex", gap: 1, flexDirection: "column", }}>
-                <Controller
-                  name="bookName"
-                  control={control}
-                  render={({ field }) => (
-                    <TextField
-                      {...field}
-                      label="Book Name"
-                      variant="outlined"
-                      fullWidth
-                      sx={{ mb: 2 }}
-                    />
-                  )}
+          <Box sx={{ display: "flex", gap: 1, flexDirection: "column", }}>
+
+            <Controller
+              name="author"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="Author Name"
+                  variant="outlined"
+                  fullWidth
+                  sx={{ mb: 2 }}
                 />
-                {errors.bookName && <Box sx={{ color: "red" }}>
-                  {errors.bookName.message}
-                </Box>}
-              </Box>
+              )}
+            />
+            {errors.author && <Box sx={{ color: "red" }}>
+              {errors.author.message}
+            </Box>}
+          </Box>
 
 
-              <Box sx={{ display: "flex", gap: 1, flexDirection: "column", }}>
-
-                <Controller
-                  name="author"
-                  control={control}
-                  render={({ field }) => (
-                    <TextField
-                      {...field}
-                      label="Author Name"
-                      variant="outlined"
-                      fullWidth
-                      sx={{ mb: 2 }}
-                    />
-                  )}
-                />
-                {errors.author && <Box sx={{ color: "red" }}>
-                  {errors.author.message}
-                </Box>}
-              </Box>
-
-
-              <Box sx={{ display: "flex", gap: 1, flexDirection: "column", }}>
-
-                <FormControl fullWidth sx={{ mb: 2 }}>
-                  <InputLabel id="demo-simple-select-label">Category</InputLabel>
-                  <Controller
-                    name="category"
-                    control={control}
-                    render={({ field }) => (
-                      <Select
-                        {...field}
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        label="Category"
-                        onChange={(event: SelectChangeEvent) => field.onChange(event.target.value)}
-                      >
-                        <MenuItem value="Fantasy">Fantasy</MenuItem>
-                        <MenuItem value="Science">Science</MenuItem>
-                        <MenuItem value="Business">Business</MenuItem>
-                      </Select>
-                    )}
-                  />
-                </FormControl>
-                {errors.category && <Box sx={{ color: "red" }}>
-                  {errors.category.message}
-                </Box>}
-              </Box>
-
-              <Button
-                variant="contained"
-                onClick={handleModalSubmit}
-              >
-                Add
-              </Button>
-            </Box>
-          </Modal>
-          <Box sx={{ display: "flex", gap: 2, alignItems: "start", mt: 2 }}>
-            <Box sx={{ display: "flex", gap: 1, flexDirection: "column", alignItems: "center" }}>
+          <Box sx={{ display: "flex", gap: 1, flexDirection: "column", }}>
+            <FormControl fullWidth sx={{ mb: 2 }}>
+              <InputLabel id="demo-simple-select-label">Category</InputLabel>
               <Controller
-                name="quantity"
+                name="category"
                 control={control}
                 render={({ field }) => (
-                  <TextField
+                  <Select
                     {...field}
-                    label="Quantity"
-                    type="number"
-                    variant="outlined"
-                    fullWidth
-                    sx={{ mb: 2 }}
-                    onChange={(e) => field.onChange(Number(e.target.value))}
-                  />
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    label="Category"
+                    onChange={(event: SelectChangeEvent) => field.onChange(event.target.value)}
+                  >
+                    <MenuItem value="Fantasy">Fantasy</MenuItem>
+                    <MenuItem value="Science">Science</MenuItem>
+                    <MenuItem value="Business">Business</MenuItem>
+                  </Select>
                 )}
               />
-
-              {errors.quantity && <Box sx={{ color: "red" }}>
-                {errors.quantity.message}
-              </Box>}
-
-            </Box>
-            <Box sx={{ display: "flex", gap: 1, flexDirection: "column", alignItems: "center" }}>
-              <Controller
-                name="rentPrice"
-                control={control}
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    label="Rent Price"
-                    type="number"
-                    variant="outlined"
-                    fullWidth
-                    sx={{ mb: 2 }}
-                    onChange={(e) => field.onChange(Number(e.target.value))}
-                  />
-                )}
-              />
-              {errors.rentPrice && <Box sx={{ color: "red" }}>
-                {errors.rentPrice.message}
-              </Box>}
-            </Box>
-
+            </FormControl>
+            {errors.category && <Box sx={{ color: "red" }}>
+              {errors.category.message}
+            </Box>}
           </Box>
-          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mt: 2, color: 'blue' }}>
-            <FileUploadOutlinedIcon
-              sx={{ fontSize: 30, cursor: 'pointer' }}
-              onClick={handleIconClick}
-            />
-            {fileName ? (
-              <Typography sx={{ ml: 2 }}>{fileName}</Typography>
-            ) : (
-              <Typography sx={{ ml: 2 }}>Upload Book cover</Typography>
-            )}
-            <Input
-              inputRef={fileInputRef}
-              type="file"
-              onChange={handleFileChange}
-              sx={{ display: 'none' }}
-            />
-          </Box>
+
           <Button
-            disabled={isPending || isUpdatePending}
             variant="contained"
-            type="submit"
+            onClick={handleModalSubmit}
           >
-            Submit
+            Add
           </Button>
-        </form>
+        </Box>
+      </Modal>
+      {/* END OF MODAL */}
+
+      {/* QUANTITY AND RENT PRICE FORM */}
+      <Box sx={{ display: "flex", gap: 2, alignItems: "start", mt: 12 }}>
+        <Box sx={{ display: "flex", gap: 1, flexDirection: "column", alignItems: "center" }}>
+          <Controller
+            name="quantity"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label="Quantity"
+                type="number"
+                variant="outlined"
+                fullWidth
+                sx={{ mb: 2, width: 300 }}
+                onChange={(e) => field.onChange(Number(e.target.value))}
+              />
+            )}
+          />
+
+          {errors.quantity && <Box sx={{ color: "red" }}>
+            {errors.quantity.message}
+          </Box>}
+
+        </Box>
+        <Box sx={{ display: "flex", gap: 1, flexDirection: "column", alignItems: "center" }}>
+          <Controller
+            name="rentPrice"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label="Rent Price"
+                type="number"
+                variant="outlined"
+                fullWidth
+                sx={{ mb: 2, width: 300 }}
+                onChange={(e) => field.onChange(Number(e.target.value))}
+              />
+            )}
+          />
+          {errors.rentPrice && <Box sx={{ color: "red" }}>
+            {errors.rentPrice.message}
+          </Box>}
+        </Box>
+
       </Box>
-    </Box>
+      {/* END OF QUANTITY AND RENT PRICE FORM */}
+
+      {/* UPLOAD ICON */}
+      <Box onClick={handleIconClick} sx={{ cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', mt: 2, color: 'blue' }}>
+        <FileUploadOutlinedIcon
+          sx={{ fontSize: 24, }}
+
+        />
+        {fileName ? (
+          <Typography sx={{ ml: 2 }}>{fileName}</Typography>
+        ) : (
+          <Typography sx={{ ml: 0.5 }}>Upload Book cover</Typography>
+        )}
+        <Input
+          inputRef={fileInputRef}
+          type="file"
+          onChange={handleFileChange}
+          sx={{ display: 'none' }}
+        />
+      </Box>
+
+      {/* SUBMIT BUTTON */}
+      <Button
+        disabled={isPending}
+        variant="contained"
+        type="submit"
+        sx={{ width: 250, mt: 5, p: 2, borderRadius: 5 }}
+      >
+        Submit
+      </Button>
+    </form>
+
   );
 };
 

@@ -15,7 +15,7 @@ export default function Owners() {
         columns={adminOwnerColumns}
         maxHeight="470px"
         title="List of Owner"
-        fetchUrl="/api/user/ownerList"
+        fetchUrl="/api/user/owner-list"
         queryKey="ownerList"
       />
 

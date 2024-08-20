@@ -58,7 +58,7 @@ const AdminDashboard = () => {
           columns={adminLiveBookColumns}
           maxHeight="300px"
           title="Live Book status"
-          fetchUrl="api/book/allBooks"
+          fetchUrl="api/book/all-books"
           queryKey="allBooks"
         />
 

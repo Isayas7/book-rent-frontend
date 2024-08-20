@@ -19,7 +19,7 @@ import { useContext } from "react";
 import { AuthContext } from "@/context/AuthContext";
 import { UserRole } from "@/utils/schema";
 import { useUserLogoutQuery } from "@/hooks/use-users-query";
-import { sideBarMenu } from "@/utils/data";
+import { sideBarMenu } from "@/utils/constant";
 import defineAbilitiesFor from "@/utils/abilities";
 
 const Sidebar = () => {
