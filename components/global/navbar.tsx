@@ -9,10 +9,12 @@ const Navbar = () => {
   const pathname = usePathname();
   const { user } = useContext(AuthContext);
 
+  const displayPath = pathname.split('/').slice(2).join('/');
+
   return (
     <Box sx={{ backgroundColor: "var(--bgCard)", p: 2, borderRadius: 2, fontSize: 18 }}>
       {user?.role === UserRole.ADMIN ? "Admin/" : user?.role === UserRole.OWNER ? "Owner/" : ""}
-      {pathname.split("/").pop()}
+      {pathname === "/dashboard" ? "dashboard" : displayPath}
     </Box>
   );
 };

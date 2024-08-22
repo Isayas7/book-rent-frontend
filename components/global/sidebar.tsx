@@ -111,14 +111,15 @@ const Sidebar = () => {
                       }}
                     >
                       <ListItem disablePadding
+
                         sx={(theme) => ({
-                          ...(item.path === pathname && {
+                          ...(item.path === pathname || item.path.startsWith("/dashboard/bookUpload") && pathname.includes("/update")) && {
                             backgroundColor: "#115293",
-                          }),
+                          },
                           borderRadius: 2,
                           marginTop: 1,
-                          "&:hover": !item.disable && {
-                            backgroundColor: "#115293",
+                          "&:hover": {
+                            backgroundColor: !item.disable ? "#115293" : undefined,
                           },
                         })}
                       >

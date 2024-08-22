@@ -128,7 +128,7 @@ export const ownerLiveBookColumns: MRT_ColumnDef<ownerLiveBookColumnsTypes>[] =
         return (
           <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
             <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
-              <Link href={`/dashboard/update/${row.original.id}`}>
+              <Link href={`/dashboard/bookUpload/update/${row.original.id}`}>
 
                 <EditOutlinedIcon sx={{ cursor: "pointer" }} />
               </Link>

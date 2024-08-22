@@ -2,6 +2,19 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import axios from 'axios';
 
 
+export const getSingleBookQuery = (bookId: number) => {
+    return useQuery({
+        queryKey: ["singleBook"],
+        queryFn: async () => {
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/api/book/single/${bookId}s`, {
+                withCredentials: true,
+            });
+            return res.data
+        },
+        enabled: !!bookId
+    });
+};
+
 export const getOwnBookQuery = () => {
     return useQuery({
         queryKey: ["ownBooks"],
