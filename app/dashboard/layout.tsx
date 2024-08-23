@@ -4,7 +4,7 @@ import Sidebar from "@/components/global/sidebar";
 import { AuthContext } from "@/context/AuthContext";
 import { Box } from "@mui/material";
 import { useRouter } from "next/navigation";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 
 export default function Layout({
   children,
@@ -17,12 +17,13 @@ export default function Layout({
     router.push("/login")
   }
 
+  const [open, setOpen] = useState<boolean>(false)
   return (
     <Box sx={{ display: "flex" }}>
-      <Box sx={{ flex: 1, height: "100vh", position: "fixed", top: 0 }}>
-        <Sidebar />
+      <Box sx={{ flex: 1, height: "100vh", width: open ? 100 : 240, position: "fixed", top: 0 }}>
+        <Sidebar open={open} setOpen={setOpen} />
       </Box>
-      <Box sx={{ flex: 4, p: 1, ml: 30, width: "100vh" }}>
+      <Box sx={{ flex: 4, p: 1, ml: open ? 12 : 30, width: "100vh" }}>
         <Navbar />
         <Box sx={{ mt: 2 }}>{children}</Box>
       </Box>

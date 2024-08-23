@@ -106,7 +106,7 @@ const UploadBook = () => {
       <AddBookModal open={open} handleClose={handleClose} register={register} control={control} errors={errors} />
 
       {/* QUANTITY AND RENT PRICE FORM */}
-      <Box sx={{ display: "flex", gap: 2, alignItems: "start", mt: 12 }}>
+      <Box sx={{ display: "flex", flexDirection: { xs: "column", md: "row" }, gap: 2, alignItems: "start", mt: 12 }}>
         <InputField name='quantity' label='Quantity' type='number' error={errors.quantity} register={register} />
         <InputField name='rentPrice' label='Rent Price' type='number' error={errors.rentPrice} register={register} />
       </Box>
@@ -122,8 +122,14 @@ const UploadBook = () => {
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
           <Box sx={{ cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', mt: 2, color: 'blue' }}>
             <FileUploadOutlinedIcon sx={{ fontSize: 24 }} />
-            <Typography sx={{ ml: 2 }}>
-              {coverFile && coverFile?.length > 0 ? coverFile[0].name : "Upload Book cover"}
+            <Typography sx={{ ml: 2, }}>
+              {coverFile && coverFile.length > 0
+                ? coverFile[0].name.length > 20
+                  ? `${coverFile[0].name.slice(0, 20)}...`
+                  : coverFile[0].name
+                : "Upload Book cover"
+              }
+
             </Typography>
           </Box>
           {errors?.coverPhotoUrl && (

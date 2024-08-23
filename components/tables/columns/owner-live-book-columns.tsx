@@ -12,7 +12,7 @@ export type ownerLiveBookColumnsTypes = {
   id: string;
   bookNamber: string;
   bookName: string;
-  status: string;
+  rentalStatus: string;
   price: string;
   coverPhotoUrl: string
 };
@@ -59,13 +59,13 @@ export const ownerLiveBookColumns: MRT_ColumnDef<ownerLiveBookColumnsTypes>[] =
       ),
     },
     {
-      accessorKey: "status",
+      accessorKey: "rentalStatus",
       header: "Status",
       size: 40,
       Cell: ({ row }) => {
         return (
           <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-            {row.original.status === "BORROWED" ?
+            {row.original.rentalStatus === "BORROWED" ?
 
               <Box
                 sx={{
@@ -101,8 +101,7 @@ export const ownerLiveBookColumns: MRT_ColumnDef<ownerLiveBookColumnsTypes>[] =
                 />
               </Box>
             }
-
-            <Box>{row.original.status === "BORROWED" ? "Reneted" : "Free"}</Box>
+            <Box>{row.original.rentalStatus === "BORROWED" ? "Rented" : "Free"}</Box>
           </Box>
         )
       }

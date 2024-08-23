@@ -67,7 +67,7 @@ const UpdateBookForm = ({ bookId }: { bookId: number }) => {
 
     const { mutate: updateBook, isPending: isUpdating, } = useUpdateBookQuery();
 
-    const coverFile = watch("coverPhotoUrl") as FileList | null;
+    const coverFile = watch("coverPhotoUrl") as FileList | string | null;
 
     const onSubmit = (data: any) => {
 
@@ -158,17 +158,22 @@ const UpdateBookForm = ({ bookId }: { bookId: number }) => {
                 hidden
             />
             <label htmlFor="file-input">
-                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
-                    <Box sx={{ cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', mt: 2, color: 'blue' }}>
+                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2, }}>
+                    <Box sx={{ cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', mt: 2, color: 'blue', }}>
                         <FileUploadOutlinedIcon sx={{ fontSize: 24 }} />
                         <Typography sx={{ ml: 2 }}>
                             {coverFile instanceof FileList && coverFile.length > 0
-                                ? coverFile[0].name
+                                ? coverFile[0].name.length > 50
+                                    ? `${coverFile[0].name.slice(0, 50)}...`
+                                    : coverFile[0].name
                                 : typeof coverFile === "string" && coverFile
-                                    ? coverFile
+                                    ? coverFile.length > 50
+                                        ? `${coverFile.slice(0, 50)}...`
+                                        : coverFile
                                     : "Upload Book cover"
                             }
                         </Typography>
+
                     </Box>
                     {errors?.coverPhotoUrl && (
                         <Typography sx={{ color: "red" }}>

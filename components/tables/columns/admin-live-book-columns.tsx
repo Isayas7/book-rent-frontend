@@ -101,7 +101,7 @@ export const adminLiveBookColumns: MRT_ColumnDef<adminLiveBookColumnsTypes>[] =
               </Box>
             }
 
-            <Box>{row.original.rentalStatus === "BORROWED" ? "Reneted" : "Free"}</Box>
+            <Box>{row.original.rentalStatus === "BORROWED" ? "Rented" : "Free"}</Box>
           </Box>
         )
       }

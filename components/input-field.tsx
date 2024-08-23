@@ -11,13 +11,14 @@ type InputFieldProps = {
 }
 const InputField = ({ label, type, name, register, error, InputLabelProps }: InputFieldProps) => {
     return (
-        <Box sx={{ display: "flex", gap: 1, flexDirection: "column", }}>
+        <Box sx={{ width: "100%", display: "flex", gap: 1, flexDirection: "column", }}>
             <TextField
                 {...register(name, { valueAsNumber: type === "number" ? true : false })}
                 label={label}
                 type={type}
                 variant="outlined"
                 InputLabelProps={InputLabelProps}
+                sx={{ width: { xs: 350, md: 300 } }}
             />
             {
                 error?.message &&

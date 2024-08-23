@@ -20,10 +20,11 @@ export default function Home() {
           <Box
             sx={{
               backgroundColor: "#171B36",
-              display: "flex",
+              display: { xs: "none", sm: "flex" },
               justifyContent: "center",
               alignItems: "center",
               flex: 1,
+
             }}
           >
             <LocalLibraryIcon sx={{ width: 200, height: 200 }} />
