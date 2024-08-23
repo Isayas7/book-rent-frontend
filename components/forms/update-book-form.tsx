@@ -62,6 +62,7 @@ const UpdateBookForm = ({ bookId }: { bookId: number }) => {
             reset(singleBook?.data)
             setShrink(true);
         }
+
     }, [reset, singleBook?.data]);
 
     const { mutate: updateBook, isPending: isUpdating, } = useUpdateBookQuery();
