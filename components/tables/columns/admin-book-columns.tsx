@@ -11,6 +11,7 @@ export type adminBookColumnsTypes = {
   id: string;
   author: string;
   username: string;
+  email: string;
   category: string;
   bookName: string;
   status: string;
@@ -34,18 +35,21 @@ export const adminBookColumns: MRT_ColumnDef<adminBookColumnsTypes>[] = [
     accessorKey: "username",
     header: "Owner",
     size: 150,
-    Cell: ({ row }) => (
-      <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-        <Image
-          src={row.original.coverPhotoUrl || "/woman.png"}
-          alt="woman"
-          width={24}
-          height={24}
-          style={{ borderRadius: "50%", border: "1px solid grey" }}
-        />
-        <Box>{row.original.username}</Box>
-      </Box>
-    ),
+    Cell: ({ row }) => {
+      const username = row.original?.email?.split('@');
+      return (
+        < Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+          <Image
+            src={row.original.coverPhotoUrl || "/woman.png"}
+            alt="woman"
+            width={24}
+            height={24}
+            style={{ borderRadius: "50%", border: "1px solid grey" }}
+          />
+          <Box>{row.original.username || username[0]}</Box>
+        </Box >
+      )
+    },
   },
   {
     accessorKey: "category",

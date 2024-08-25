@@ -137,8 +137,7 @@ const UpdateBookForm = ({ bookId }: { bookId: number }) => {
                     error={errors.quantity}
                     register={register}
                     InputLabelProps={{ shrink: shrink }}
-
-
+                    sx={{ width: { xs: 350, md: 300 } }}
                 />
                 <InputField
                     name='rentPrice'
@@ -147,6 +146,7 @@ const UpdateBookForm = ({ bookId }: { bookId: number }) => {
                     error={errors.rentPrice}
                     register={register}
                     InputLabelProps={{ shrink: shrink }}
+                    sx={{ width: { xs: 350, md: 300 } }}
                 />
             </Box>
 

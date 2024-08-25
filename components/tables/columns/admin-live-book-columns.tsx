@@ -6,6 +6,7 @@ import Image from "next/image";
 export type adminLiveBookColumnsTypes = {
   no: string;
   bookNamber: string;
+  email: string;
   username: string;
   rentalStatus: string;
   price: string;
@@ -37,10 +38,11 @@ export const adminLiveBookColumns: MRT_ColumnDef<adminLiveBookColumnsTypes>[] =
       ),
     },
     {
-      accessorKey: "username",
+      accessorKey: "email",
       header: "Owner",
       size: 150,
       Cell: ({ row }) => {
+        const username = row.original?.email?.split('@');
         return (
           <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
             <Image
@@ -50,7 +52,7 @@ export const adminLiveBookColumns: MRT_ColumnDef<adminLiveBookColumnsTypes>[] =
               height={24}
               style={{ borderRadius: "50%", border: "1px solid grey" }}
             />
-            <Box>{row.original.username}</Box>
+            <Box>{row.original.username || username[0]}</Box>
           </Box>
         )
       }

@@ -33,6 +33,7 @@ export const adminOwnerColumns: MRT_ColumnDef<adminOwnerColumnsTypes>[] = [
     header: "Owner",
     size: 150,
     Cell: ({ row }) => {
+      const username = row.original?.email?.split('@');
       return (
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
           <Image
@@ -42,7 +43,7 @@ export const adminOwnerColumns: MRT_ColumnDef<adminOwnerColumnsTypes>[] = [
             height={24}
             style={{ borderRadius: "50%", border: "1px solid grey" }}
           />
-          <Box>{row.original.username}</Box>
+          <Box>{row.original.username || username[0]}</Box>
         </Box>
       )
     }
@@ -159,6 +160,7 @@ export const adminOwnerColumns: MRT_ColumnDef<adminOwnerColumnsTypes>[] = [
           },
         });
       }
+      const username = row.original?.email?.split('@');
 
       return (
         < Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
@@ -172,7 +174,7 @@ export const adminOwnerColumns: MRT_ColumnDef<adminOwnerColumnsTypes>[] = [
             >
               <Box sx={{ ...style, width: 500 }}>
                 <TextField
-                  value={row.original.username}
+                  value={row.original.username || username[0]}
                   id="outlined-basic"
                   label="Name"
                   type="text"

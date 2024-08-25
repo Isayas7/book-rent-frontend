@@ -76,10 +76,15 @@ export const getFreeOwnerBooksQuery = () => {
 
 
 export const useBookCreateQuery = () => {
+    const queryClient = useQueryClient();
+
     return useMutation({
         mutationFn: async (newBook: FormData) => {
             const res = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/book/create`, newBook, { withCredentials: true });
             return res;
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["ownBooks"] });
         },
     });
 };

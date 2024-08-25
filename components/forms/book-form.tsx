@@ -107,8 +107,8 @@ const UploadBook = () => {
 
       {/* QUANTITY AND RENT PRICE FORM */}
       <Box sx={{ display: "flex", flexDirection: { xs: "column", md: "row" }, gap: 2, alignItems: "start", mt: 12 }}>
-        <InputField name='quantity' label='Quantity' type='number' error={errors.quantity} register={register} />
-        <InputField name='rentPrice' label='Rent Price' type='number' error={errors.rentPrice} register={register} />
+        <InputField name='quantity' label='Quantity' type='number' error={errors.quantity} register={register} sx={{ width: { xs: 350, md: 300 } }} />
+        <InputField name='rentPrice' label='Rent Price' type='number' error={errors.rentPrice} register={register} sx={{ width: { xs: 350, md: 300 } }} />
       </Box>
 
       <input
